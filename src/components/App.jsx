@@ -64,7 +64,7 @@ export default class App extends Component {
 
     const contacts = this.state.filter === '' ? this.state.contacts : result
 
-    console.log('contacts:', contacts);
+    //console.log('contacts:', contacts);
 
     return (
       <div>
