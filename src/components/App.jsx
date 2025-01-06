@@ -8,10 +8,10 @@ export default class App extends Component {
 
   state = {
     contacts: [
-      {id: 'id-1', name: 'Rosie Simpson', number: '459-12-56'},
-      {id: 'id-2', name: 'Hermione Kline', number: '443-89-12'},
-      {id: 'id-3', name: 'Eden Clements', number: '645-17-79'},
-      {id: 'id-4', name: 'Annie Copeland', number: '227-91-26'},
+      // {id: 'id-1', name: 'Rosie Simpson', number: '459-12-56'},
+      // {id: 'id-2', name: 'Hermione Kline', number: '443-89-12'},
+      // {id: 'id-3', name: 'Eden Clements', number: '645-17-79'},
+      // {id: 'id-4', name: 'Annie Copeland', number: '227-91-26'},
     ],
     filter: '',
     name: '',
@@ -27,7 +27,7 @@ export default class App extends Component {
     const person = { name: name, id: nameId, number }
 
     const exist = this.state.contacts.find(item => item.name === person.name)
-    
+
     if (exist) {
       alert(`${person.name} already in contacts.`)
     } else {
@@ -50,8 +50,7 @@ export default class App extends Component {
 
   handleDelete = (id) => {
     //console.log('test:',id);
-    this.setState({contacts: this.state.contacts.filter(item => item.id !== id) })
-    
+    this.setState({ contacts: this.state.contacts.filter(item => item.id !== id) })
   }
 
   render() {
@@ -63,8 +62,8 @@ export default class App extends Component {
     //console.log('result:',result);
 
     const contacts = this.state.filter === '' ? this.state.contacts : result
+    //console.log('render');
 
-    //console.log('contacts:', contacts);
 
     return (
       <div>
@@ -74,9 +73,32 @@ export default class App extends Component {
         <h2>Contacts</h2>
         <Filter filterId={filterId} handleFilter={this.handleFilter} />
 
-        <ContactList contacts={contacts} handleDelete={this.handleDelete}/>
+        <ContactList contacts={contacts} handleDelete={this.handleDelete} />
 
       </div>
     );
+  }
+
+  componentDidMount() {
+    //console.log('did mount');
+    const savedValue = localStorage.getItem('contacts');
+    //console.log('saved:',savedValue);
+
+    if (savedValue) {
+      this.setState({ contacts: JSON.parse(savedValue) });
+    }
+
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    //console.log('did Update');
+    //console.log('prevProps:',prevProps);
+    //console.log('prevState:', prevState);
+    //console.log('this.state:', this.state.contacts);
+
+    if (prevState.contacts !== this.state.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts))
+    }
+
   }
 }
